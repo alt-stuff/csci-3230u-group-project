@@ -26,7 +26,7 @@
 ### #2 - Review of ReviewForm
 - **Date:** 2026-11-24
 - **Member:** Osezele Izibili
-- **Tool / model:** Chatgbt
+- **Tool / model:** Chatgpt
 - **Files:** `paper-critic/src/components/review-form/review-form.tsx`
 - **Prompt (verbatim):**
 
