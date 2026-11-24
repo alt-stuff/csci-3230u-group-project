@@ -3,14 +3,11 @@ import { useEffect, useState } from 'react'
 import Details from './details.tsx'
 import Discovery from './discovery.tsx'
 import Profile from './profile.tsx'
+import useFavorites from "./useFavorites.ts";
 
 export default function MainContent() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname)
-  const [favorites, setFavorites] = useState<string[]>(() => {const saved = localStorage.getItem("favorites"); return saved ? JSON.parse(saved) : [];});
-
-  function toggleFavorite(isbn: string) {
-  setFavorites((previousFavorites) => previousFavorites.includes(isbn) ? previousFavorites.filter((id) => id !== isbn) : [...previousFavorites, isbn]);
-  }
+  const { favorites, toggleFavorite } = useFavorites();
 
   useEffect(() => {
   localStorage.setItem("favorites", JSON.stringify(favorites));
