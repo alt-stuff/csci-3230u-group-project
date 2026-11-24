@@ -3,7 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const app = express();
-const PORT = process.env.PORT || 4242;
+const PORT = Number(process.env.PORT || 4242);
 
 if (process.env.DEPLOY !== undefined || process.env.PAPER_CRITIC_DEPLOY !== undefined) {
   const frontendDirectory = path.resolve(
