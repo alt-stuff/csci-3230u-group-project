@@ -10,6 +10,12 @@ interface DetailProps {
   isbn: string;
   favorites: string[];
   toggleFavorite: (isbn: string) => void;
+  currentlyReading: string[];
+  toggleCurrentlyReading: (isbn: string) => void;
+  completed: string[];
+  toggleCompleted: (isbn: string) => void;
+  wantToRead: string[];
+  toggleWantToRead: (isbn: string) => void;
 }
 
 export default function Details(props: DetailProps) {
@@ -109,7 +115,7 @@ export default function Details(props: DetailProps) {
             </div>
           </article>
           <div id="favorites">
-            <BookActions isFavorite={props.favorites.includes(props.isbn)} onToggleFavorite={() => props.toggleFavorite(props.isbn)}/>
+            <BookActions isFavorite={props.favorites.includes(props.isbn)} onToggleFavorite={() => props.toggleFavorite(props.isbn)} isCurrentlyReading={props.currentlyReading.includes(props.isbn)} onToggleCurrentlyReading={() => props.toggleCurrentlyReading(props.isbn)} isCompleted={props.completed.includes(props.isbn)} onToggleCompleted={() => props.toggleCompleted(props.isbn)} isWantToRead={props.wantToRead.includes(props.isbn)} onToggleWantToRead={() => props.toggleWantToRead(props.isbn)}/>
           </div>
         </section>
 
