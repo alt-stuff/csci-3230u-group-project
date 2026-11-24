@@ -37,6 +37,10 @@ if (process.env.DEPLOY !== undefined || process.env.PAPER_CRITIC_DEPLOY !== unde
   });
 }
 
-app.listen(PORT, () => {
+app.listen(PORT, (error?: Error) => {
+  if (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1);
+  }
   console.log(`Server running on http://localhost:${PORT}`);
 });
