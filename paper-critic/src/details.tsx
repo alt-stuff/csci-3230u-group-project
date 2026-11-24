@@ -44,7 +44,7 @@ export default function Details(props: DetailProps) {
 
     async function fetchRecommendations() {
       try {
-        const response = await fetch("/api/similar", { signal: controller.signal });
+        const response = await fetch("/api/similar?isbn=" + props.isbn, { signal: controller.signal });
         if (!response.ok) {
           throw new Error("Unable to load recommendations.");
         }
@@ -65,7 +65,7 @@ export default function Details(props: DetailProps) {
 
     void fetchRecommendations();
     return () => controller.abort();
-  }, []);
+  }, [props.isbn]);
 
   if (bookData === null) {
     return <p>Loading book...</p>;

@@ -4,6 +4,7 @@ import Details from './details.tsx'
 import Discovery from './discovery.tsx'
 import Profile from './profile.tsx'
 
+
 export default function MainContent() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname)
   const [favorites, setFavorites] = useState<string[]>(() => {const saved = localStorage.getItem("favorites"); return saved ? JSON.parse(saved) : [];});
@@ -46,6 +47,13 @@ export default function MainContent() {
 
     case "profile": 
       node = <Profile favorites={favorites}/>
+      break;
+
+    case "search":
+      const query = path_split.shift();
+      if(query !== undefined){
+        node = <Discovery query={decodeURIComponent(query)}/>;
+      } 
       break;
 
     default: node = NOT_FOUND
