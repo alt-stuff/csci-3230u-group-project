@@ -6,24 +6,43 @@ import { Book } from "./concept/book";
 
 interface ProfileProps {
   favorites: string[];
+  currentlyReading: string[];
+  completed: string[];
 }
 
-function Profile({favorites}: ProfileProps) {
+function Profile({favorites, currentlyReading, completed}: ProfileProps) {
   const [activeFilter, setActiveFilter] = useState("all");
   const [books, setBooks] = useState<Book[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const visibleBooks = activeFilter === "all" || activeFilter === "favorites" ? books : [];
+  const visibleBooks =
+    activeFilter === "all" ||
+    activeFilter === "favorites" ||
+    activeFilter === "currently reading" ||
+    activeFilter === "completed"
+      ? books
+      : [];
 
   useEffect(() => {
     const controller = new AbortController();
 
+    let selectedIsbns: string[] = [];
+
+    if (activeFilter === "all") {
+      selectedIsbns = [...new Set([...favorites, ...currentlyReading, ...completed])];
+    } else if (activeFilter === "favorites") {
+      selectedIsbns = favorites;
+    } else if (activeFilter === "currently reading") {
+      selectedIsbns = currentlyReading;
+    } else if (activeFilter === "completed") {
+      selectedIsbns = completed;
+    }
     async function fetchBooks() {
       try {
         setIsLoading(true);
         setError(null);
         const results = await Promise.all(
-          favorites.map(async (isbn) => {
+          selectedIsbns.map(async (isbn) => {
             const response = await fetch(
               `/api/isbn/${encodeURIComponent(isbn)}`,
               { signal: controller.signal }
@@ -53,8 +72,7 @@ function Profile({favorites}: ProfileProps) {
 
     void fetchBooks();
     return () => controller.abort();
-  }, [favorites]);
-
+  }, [activeFilter, favorites, currentlyReading, completed]);
 
   return (
   <div className={styles.profile}>

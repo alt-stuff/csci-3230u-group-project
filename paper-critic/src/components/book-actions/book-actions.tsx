@@ -4,9 +4,13 @@ import styles from "./book-actions.module.css";
 interface BookActionsProps {
   isFavorite: boolean;
   onToggleFavorite: () => void;
+  isCurrentlyReading: boolean;
+  onToggleCurrentlyReading: () => void;
+  isCompleted: boolean;
+onToggleCompleted: () => void;
 }
 
-export default function BookActions({isFavorite, onToggleFavorite}: BookActionsProps) {
+export default function BookActions({isFavorite, onToggleFavorite, isCurrentlyReading, onToggleCurrentlyReading, isCompleted, onToggleCompleted}: BookActionsProps) {
   return (
     <div className={styles["book-actions"]}>
       <fieldset className={styles["star-rating"]}>
@@ -36,6 +40,26 @@ export default function BookActions({isFavorite, onToggleFavorite}: BookActionsP
       >
         <span aria-hidden="true">{isFavorite ? "♥" : "♡"}</span>
         {isFavorite ? "Saved to Favorites" : "Add to Favorites"}
+      </button>
+      <button
+        className={`${styles["favorite-button"]} ${
+          isCurrentlyReading ? styles["is-favorite"] : ""
+        }`}
+        type="button"
+        aria-pressed={isCurrentlyReading}
+        onClick={onToggleCurrentlyReading}
+      >
+        {isCurrentlyReading ? "Currently Reading" : "Mark as Currently Reading"}
+      </button>
+      <button
+        className={`${styles["favorite-button"]} ${
+          isCompleted ? styles["is-favorite"] : ""
+        }`}
+        type="button"
+        aria-pressed={isCompleted}
+        onClick={onToggleCompleted}
+      >
+        {isCompleted ? "Completed" : "Mark as Completed"}
       </button>
     </div>
   );

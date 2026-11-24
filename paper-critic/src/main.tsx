@@ -4,14 +4,14 @@ import Details from './details.tsx'
 import Discovery from './discovery.tsx'
 import Profile from './profile.tsx'
 import useFavorites from "./useFavorites.ts";
+import useCurrentlyReading from "./useCurrentlyReading.ts";
+import useCompleted from "./useCompleted.ts";
 
 export default function MainContent() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname)
   const { favorites, toggleFavorite } = useFavorites();
-
-  useEffect(() => {
-  localStorage.setItem("favorites", JSON.stringify(favorites));
-  }, [favorites]);
+  const { currentlyReading, toggleCurrentlyReading } = useCurrentlyReading();
+  const { completed, toggleCompleted } = useCompleted();
 
   useEffect(() => {
     const handlePopState = () => setCurrentPath(window.location.pathname)
@@ -38,13 +38,13 @@ export default function MainContent() {
   switch (path_split.shift()) {
     case "details":
       let book_isbn = path_split.shift()
-      if (book_isbn != undefined) node = <Details isbn={book_isbn} favorites={favorites} toggleFavorite={toggleFavorite} />
+      if (book_isbn != undefined) node = <Details isbn={book_isbn} favorites={favorites} toggleFavorite={toggleFavorite} currentlyReading={currentlyReading} toggleCurrentlyReading={toggleCurrentlyReading} completed={completed} toggleCompleted={toggleCompleted}/>
       break;
 
     case "profile": 
-      node = <Profile favorites={favorites}/>
+      node = <Profile favorites={favorites} currentlyReading={currentlyReading} completed={completed} />     
       break;
-
+    
     default: node = NOT_FOUND
   }
 
