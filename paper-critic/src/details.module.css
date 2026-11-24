@@ -65,6 +65,13 @@
   font-size: 14px;
 }
 
+.description-heading {
+  margin: 0 0 8px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 18px;
+  font-weight: 600;
+}
+
 .description {
   max-width: 480px;
   margin: 0;

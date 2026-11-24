@@ -93,9 +93,14 @@ export default function Details(props: DetailProps) {
             <div className={styles["featured-copy"]}>
               <h1 id="book-title">{bookData.title}</h1>
               <p className={styles.author}>By {bookData.author || "Unknown author"}</p>
-              <p className={styles.description}>
-                {bookData.description || "No description available."}
-              </p>
+              <section aria-labelledby="book-description-heading">
+                <h2 id="book-description-heading" className={styles["description-heading"]}>
+                  About this book
+                </h2>
+                <p className={styles.description}>
+                  {bookData.description?.trim() || "No description available for this book."}
+                </p>
+              </section>
               <p>
                 <strong>Genres: </strong>
                 {bookData.genres.length > 0
