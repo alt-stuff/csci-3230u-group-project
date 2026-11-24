@@ -1,4 +1,4 @@
-
+// AI-assisted (FormEvent type, .trim() check) - see AI-USAGE.md #2
 import { useState } from "react";
 import type { FormEvent } from "react";
 import type { ReviewEntry } from "../../concept/review-entry";
@@ -63,3 +63,4 @@ export default function ReviewForm({ onAdd }: ReviewFormProps) {
         </form>
     );
 }
+
