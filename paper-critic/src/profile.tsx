@@ -8,9 +8,10 @@ interface ProfileProps {
   favorites: string[];
   currentlyReading: string[];
   completed: string[];
+  wantToRead: string[];
 }
 
-function Profile({favorites, currentlyReading, completed}: ProfileProps) {
+function Profile({favorites, currentlyReading, completed, wantToRead}: ProfileProps) {
   const [activeFilter, setActiveFilter] = useState("all");
   const [books, setBooks] = useState<Book[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -19,7 +20,8 @@ function Profile({favorites, currentlyReading, completed}: ProfileProps) {
     activeFilter === "all" ||
     activeFilter === "favorites" ||
     activeFilter === "currently reading" ||
-    activeFilter === "completed"
+    activeFilter === "completed" ||
+    activeFilter === "new" 
       ? books
       : [];
 
@@ -29,9 +31,11 @@ function Profile({favorites, currentlyReading, completed}: ProfileProps) {
     let selectedIsbns: string[] = [];
 
     if (activeFilter === "all") {
-      selectedIsbns = [...new Set([...favorites, ...currentlyReading, ...completed])];
+      selectedIsbns = [...new Set([...favorites, ...currentlyReading, ...completed, ...wantToRead])];
     } else if (activeFilter === "favorites") {
       selectedIsbns = favorites;
+    } else if (activeFilter === "new") {
+      selectedIsbns = wantToRead;
     } else if (activeFilter === "currently reading") {
       selectedIsbns = currentlyReading;
     } else if (activeFilter === "completed") {
@@ -72,7 +76,7 @@ function Profile({favorites, currentlyReading, completed}: ProfileProps) {
 
     void fetchBooks();
     return () => controller.abort();
-  }, [activeFilter, favorites, currentlyReading, completed]);
+  }, [activeFilter, favorites, currentlyReading, completed, wantToRead]);
 
   return (
   <div className={styles.profile}>

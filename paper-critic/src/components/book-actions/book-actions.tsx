@@ -7,10 +7,12 @@ interface BookActionsProps {
   isCurrentlyReading: boolean;
   onToggleCurrentlyReading: () => void;
   isCompleted: boolean;
-onToggleCompleted: () => void;
+  onToggleCompleted: () => void;
+  isWantToRead: boolean;
+  onToggleWantToRead: () => void;
 }
 
-export default function BookActions({isFavorite, onToggleFavorite, isCurrentlyReading, onToggleCurrentlyReading, isCompleted, onToggleCompleted}: BookActionsProps) {
+export default function BookActions({isFavorite, onToggleFavorite, isCurrentlyReading, onToggleCurrentlyReading, isCompleted, onToggleCompleted, isWantToRead, onToggleWantToRead}: BookActionsProps) {
   return (
     <div className={styles["book-actions"]}>
       <fieldset className={styles["star-rating"]}>
@@ -60,6 +62,16 @@ export default function BookActions({isFavorite, onToggleFavorite, isCurrentlyRe
         onClick={onToggleCompleted}
       >
         {isCompleted ? "Completed" : "Mark as Completed"}
+      </button>
+      <button
+        className={`${styles["favorite-button"]} ${
+          isWantToRead ? styles["is-favorite"] : ""
+        }`}
+        type="button"
+        aria-pressed={isWantToRead}
+        onClick={onToggleWantToRead}
+      >
+        {isWantToRead ? "Saved to Want to Read" : "Want to Read"}
       </button>
     </div>
   );
