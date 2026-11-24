@@ -122,7 +122,7 @@ export default function Details(props: DetailProps) {
           {recommendations instanceof Error? (
             <p role="alert">{recommendations.message}</p>
           ) : (
-            recommendations == null? <></> : 
+            recommendations == null? <></> :
             <BookGrid className={styles["recommendations-grid"]}>
               {recommendations.map((book) => (
                 <BookCard book={book}/>
@@ -135,7 +135,7 @@ export default function Details(props: DetailProps) {
       <section id="reviews" className={styles["reviews-section"]} aria-labelledby="reviews-heading">
         <h2 id="reviews-heading">Reader reviews</h2>
         <div className={styles.reviews}>
-          <ReviewSection isbn={props.isbn} />
+          <ReviewSection isbn={props.isbn} key={props.isbn} />
         </div>
       </section>
     </div>
