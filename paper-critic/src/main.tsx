@@ -7,6 +7,7 @@ import useCurrentlyReading from "./useCurrentlyReading.ts";
 import useCompleted from "./useCompleted.ts";
 import useWantToRead from "./useWantToRead.ts";
 
+
 export default function MainContent() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname)
   const { favorites, toggleFavorite } = useFavorites();
@@ -41,11 +42,16 @@ export default function MainContent() {
       let book_isbn = path_split.shift()
       if (book_isbn != undefined) node = <Details isbn={book_isbn} favorites={favorites} toggleFavorite={toggleFavorite} currentlyReading={currentlyReading} toggleCurrentlyReading={toggleCurrentlyReading} completed={completed} toggleCompleted={toggleCompleted} wantToRead={wantToRead} toggleWantToRead={toggleWantToRead}/>
       break;
-
     case "profile": 
       node = <Profile favorites={favorites} currentlyReading={currentlyReading} completed={completed} wantToRead={wantToRead}/>     
       break;
-    
+    case "search":
+      const query = path_split.shift();
+      if(query !== undefined){
+        node = <Discovery query={decodeURIComponent(query)}/>;
+      } 
+      break;
+
     default: node = NOT_FOUND
   }
 

@@ -50,7 +50,7 @@ export default function Details(props: DetailProps) {
 
     async function fetchRecommendations() {
       try {
-        const response = await fetch("/api/similar", { signal: controller.signal });
+        const response = await fetch("/api/similar?isbn=" + props.isbn, { signal: controller.signal });
         if (!response.ok) {
           throw new Error("Unable to load recommendations.");
         }
@@ -71,7 +71,7 @@ export default function Details(props: DetailProps) {
 
     void fetchRecommendations();
     return () => controller.abort();
-  }, []);
+  }, [props.isbn]);
 
   if (bookData === null) {
     return <p>Loading book...</p>;
@@ -128,7 +128,7 @@ export default function Details(props: DetailProps) {
           {recommendations instanceof Error? (
             <p role="alert">{recommendations.message}</p>
           ) : (
-            recommendations == null? <></> : 
+            recommendations == null? <></> :
             <BookGrid className={styles["recommendations-grid"]}>
               {recommendations.map((book) => (
                 <BookCard book={book}/>
@@ -141,7 +141,7 @@ export default function Details(props: DetailProps) {
       <section id="reviews" className={styles["reviews-section"]} aria-labelledby="reviews-heading">
         <h2 id="reviews-heading">Reader reviews</h2>
         <div className={styles.reviews}>
-          <ReviewSection isbn={props.isbn} />
+          <ReviewSection isbn={props.isbn} key={props.isbn} />
         </div>
       </section>
     </div>
