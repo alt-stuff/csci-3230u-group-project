@@ -1,11 +1,12 @@
 import { navigateTo } from "../../navigation";
 import style from "./side-bar.module.css"
+import logo from "../../assets/paper-critic-logo.png"
 
 export default function Sidebar({active = 0}) {
   return (
     <aside className={style.sidebar}>
         <a className={style.logo} onClick={()=>navigateTo("/")} href="#top">
-            <img src="/concept-logo.jpg" width="30" height="30" alt="" />
+            <img src={logo} width="30" height="30" alt="" />
           <span>papercritic</span>
         </a>
 
