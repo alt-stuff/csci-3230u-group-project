@@ -1,6 +1,6 @@
 import { navigateTo } from "../../navigation";
 import style from "./side-bar.module.css"
-import logo from "../../assets/paper-critic-logo.jpg"
+import logo from "../../assets/paper-critic-logo.png"
 
 export default function Sidebar({active = 0}) {
   return (
