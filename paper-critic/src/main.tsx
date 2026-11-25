@@ -1,20 +1,19 @@
-
 import { useEffect, useState } from 'react'
 import Details from './details.tsx'
 import Discovery from './discovery.tsx'
 import Profile from './profile.tsx'
+import useFavorites from "./useFavorites.ts";
+import useCurrentlyReading from "./useCurrentlyReading.ts";
+import useCompleted from "./useCompleted.ts";
+import useWantToRead from "./useWantToRead.ts";
+
 
 export default function MainContent() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname)
-  const [favorites, setFavorites] = useState<string[]>(() => {const saved = localStorage.getItem("favorites"); return saved ? JSON.parse(saved) : [];});
-
-  function toggleFavorite(isbn: string) {
-  setFavorites((previousFavorites) => previousFavorites.includes(isbn) ? previousFavorites.filter((id) => id !== isbn) : [...previousFavorites, isbn]);
-  }
-
-  useEffect(() => {
-  localStorage.setItem("favorites", JSON.stringify(favorites));
-  }, [favorites]);
+  const { favorites, toggleFavorite } = useFavorites();
+  const { currentlyReading, toggleCurrentlyReading } = useCurrentlyReading();
+  const { completed, toggleCompleted } = useCompleted();
+  const { wantToRead, toggleWantToRead } = useWantToRead();
 
   useEffect(() => {
     const handlePopState = () => setCurrentPath(window.location.pathname)
@@ -41,11 +40,16 @@ export default function MainContent() {
   switch (path_split.shift()) {
     case "details":
       let book_isbn = path_split.shift()
-      if (book_isbn != undefined) node = <Details isbn={book_isbn} favorites={favorites} toggleFavorite={toggleFavorite} />
+      if (book_isbn != undefined) node = <Details isbn={book_isbn} favorites={favorites} toggleFavorite={toggleFavorite} currentlyReading={currentlyReading} toggleCurrentlyReading={toggleCurrentlyReading} completed={completed} toggleCompleted={toggleCompleted} wantToRead={wantToRead} toggleWantToRead={toggleWantToRead}/>
       break;
-
     case "profile": 
-      node = <Profile favorites={favorites}/>
+      node = <Profile favorites={favorites} currentlyReading={currentlyReading} completed={completed} wantToRead={wantToRead}/>     
+      break;
+    case "search":
+      const query = path_split.shift();
+      if(query !== undefined){
+        node = <Discovery query={decodeURIComponent(query)}/>;
+      } 
       break;
 
     default: node = NOT_FOUND

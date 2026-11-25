@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
 import Review from "../review/review";
 import { ReviewEntry } from "../../concept/review-entry";
+import useReviews from "../../useReviews";
+import ReviewForm from "../review-form/review-form";
 
 export default function ReviewSection({ isbn }: { isbn: string }) {
   const [reviewResult, setReviewResult] = useState<{
     isbn: string;
     reviews: ReviewEntry[] | Error;
   } | null>(null);
+
+  const { reviews: savedReviews, addReview, deleteReview } = useReviews(isbn);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -52,10 +56,6 @@ export default function ReviewSection({ isbn }: { isbn: string }) {
     return <p role="alert">{reviews.message}</p>;
   }
 
-  if (reviews.length === 0) {
-    return <p>No reviews available.</p>;
-  }
-
   return (
     <>
       {reviews.map((review, index) => (
@@ -63,6 +63,21 @@ export default function ReviewSection({ isbn }: { isbn: string }) {
           <p>{review.content}</p>
         </Review>
       ))}
+
+      {savedReviews.map((review, index) => (
+        <Review key={`saved-${index}`} review={review}>
+          <p>{review.content}</p>
+          <button
+            type="button"
+            aria-label={`Delete review by ${review.author}`}
+            onClick={() => deleteReview(index)}
+          >
+            Delete
+          </button>
+        </Review>
+      ))}
+
+      <ReviewForm onAdd={addReview} />
     </>
   );
 }

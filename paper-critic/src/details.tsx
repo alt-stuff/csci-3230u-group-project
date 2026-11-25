@@ -10,6 +10,12 @@ interface DetailProps {
   isbn: string;
   favorites: string[];
   toggleFavorite: (isbn: string) => void;
+  currentlyReading: string[];
+  toggleCurrentlyReading: (isbn: string) => void;
+  completed: string[];
+  toggleCompleted: (isbn: string) => void;
+  wantToRead: string[];
+  toggleWantToRead: (isbn: string) => void;
 }
 
 export default function Details(props: DetailProps) {
@@ -44,7 +50,7 @@ export default function Details(props: DetailProps) {
 
     async function fetchRecommendations() {
       try {
-        const response = await fetch("/api/similar", { signal: controller.signal });
+        const response = await fetch("/api/similar?isbn=" + props.isbn, { signal: controller.signal });
         if (!response.ok) {
           throw new Error("Unable to load recommendations.");
         }
@@ -65,7 +71,7 @@ export default function Details(props: DetailProps) {
 
     void fetchRecommendations();
     return () => controller.abort();
-  }, []);
+  }, [props.isbn]);
 
   if (bookData === null) {
     return <p>Loading book...</p>;
@@ -109,7 +115,7 @@ export default function Details(props: DetailProps) {
             </div>
           </article>
           <div id="favorites">
-            <BookActions isFavorite={props.favorites.includes(props.isbn)} onToggleFavorite={() => props.toggleFavorite(props.isbn)}/>
+            <BookActions isFavorite={props.favorites.includes(props.isbn)} onToggleFavorite={() => props.toggleFavorite(props.isbn)} isCurrentlyReading={props.currentlyReading.includes(props.isbn)} onToggleCurrentlyReading={() => props.toggleCurrentlyReading(props.isbn)} isCompleted={props.completed.includes(props.isbn)} onToggleCompleted={() => props.toggleCompleted(props.isbn)} isWantToRead={props.wantToRead.includes(props.isbn)} onToggleWantToRead={() => props.toggleWantToRead(props.isbn)}/>
           </div>
         </section>
 
@@ -122,7 +128,7 @@ export default function Details(props: DetailProps) {
           {recommendations instanceof Error? (
             <p role="alert">{recommendations.message}</p>
           ) : (
-            recommendations == null? <></> : 
+            recommendations == null? <></> :
             <BookGrid className={styles["recommendations-grid"]}>
               {recommendations.map((book) => (
                 <BookCard book={book}/>
@@ -135,7 +141,7 @@ export default function Details(props: DetailProps) {
       <section id="reviews" className={styles["reviews-section"]} aria-labelledby="reviews-heading">
         <h2 id="reviews-heading">Reader reviews</h2>
         <div className={styles.reviews}>
-          <ReviewSection isbn={props.isbn} />
+          <ReviewSection isbn={props.isbn} key={props.isbn} />
         </div>
       </section>
     </div>
